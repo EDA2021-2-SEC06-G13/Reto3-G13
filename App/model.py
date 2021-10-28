@@ -31,12 +31,51 @@ from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
+from DISClib.ADT import orderedmap as om
 
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
 """
+def newCatalog():
+    catalog = {'ufos': None}
 
+    catalog['ufos'] = mp.newMap(1000,maptype='PROBING',loadfactor=0.5,comparefunction=cmpufos)
+    return catalog
+
+
+
+def cmpufos(data,data_entry):
+
+    x = me.getKey(data_entry)    
+    if int(data) == int(x):         
+        return 0     
+    elif int(data) > int(x):         
+        return 1     
+    else:         
+        return -1
+
+
+
+def addUfos(catalog,ufo):
+    presente = mp.contains(catalog["ufos"], ufo["city"])
+    if not presente:
+        lista=lt.newList()
+        mp.put(catalog["ufos"],ufo["city"],lista)
+        nombre=ufo["city"]
+        lt.addFirst(catalog["ufos"][nombre],ufo)
+    else:
+        nombre=ufo["city"]
+        lt.addLast(catalog["ufos"][nombre],ufo)
+
+
+
+
+
+"""""
+def primer_requerimiento(nombre_ciudad,catalog):
+
+"""
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo

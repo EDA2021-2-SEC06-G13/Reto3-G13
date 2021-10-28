@@ -25,7 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+from DISClib.ADT import map as mp
 
 """
 La vista se encarga de la interacción con el usuario
@@ -41,6 +41,15 @@ def printMenu():
 
 catalog = None
 
+
+def initCatalog():
+    """
+    Inicializa el catalogo 
+    """
+    return controller.initCatalog()
+
+def loadData(catalog):
+     return controller.loadData(catalog)
 """
 Menu principal
 """
@@ -49,6 +58,18 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog=initCatalog()
+        loadData(catalog)
+        sumatoria=0
+        info=mp.valueSet(catalog["ufos"])
+        for i in range(1,lt.size(info)+1):
+            cant_ciudad=lt.getElement(info,i)
+            cantidad=lt.size(cant_ciudad)
+            sumatoria+=cantidad
+
+
+        print('Total de UFOS cargados: ' + str(cantidad))
+
 
     elif int(inputs[0]) == 2:
         pass
