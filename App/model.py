@@ -40,17 +40,15 @@ los mismos.
 def newCatalog():
     catalog = {'ufos': None}
 
-    catalog['ufos'] = mp.newMap(1000,maptype='PROBING',loadfactor=0.5,comparefunction=cmpufos)
+    catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
     return catalog
 
 
 
-def cmpufos(data,data_entry):
-
-    x = me.getKey(data_entry)    
-    if int(data) == int(x):         
+def cmpufos(city_1,city_2):  
+    if city_1 == city_2:         
         return 0     
-    elif int(data) > int(x):         
+    elif city_1 > city_2:         
         return 1     
     else:         
         return -1
@@ -58,24 +56,32 @@ def cmpufos(data,data_entry):
 
 
 def addUfos(catalog,ufo):
-    presente = mp.contains(catalog["ufos"], ufo["city"])
+    presente = om.contains(catalog["ufos"], ufo["city"])
     if not presente:
         lista=lt.newList()
-        mp.put(catalog["ufos"],ufo["city"],lista)
-        nombre=ufo["city"]
-        lt.addFirst(catalog["ufos"][nombre],ufo)
+        lt.addFirst(lista, ufo)
+        om.put(catalog["ufos"],ufo["city"],lista)
+        
     else:
         nombre=ufo["city"]
-        lt.addLast(catalog["ufos"][nombre],ufo)
+        entry = om.get(catalog["ufos"], nombre)
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
 
 
 
 
-
-"""""
 def primer_requerimiento(nombre_ciudad,catalog):
+    lista=om.keySet(catalog["ufos"])
+    numero_avistamientos=lt.size(lista)
+    if om.contains(catalog["ufos"],nombre_ciudad):
+        entry=om.get(catalog["ufos"], nombre_ciudad)
+        value= me.getValue(entry)
+        numero_ciudad=lt.size(value)
+    else:
+        return (numero_avistamientos,lista)
 
-"""
+
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo

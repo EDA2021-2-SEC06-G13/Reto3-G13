@@ -26,6 +26,7 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 
 """
 La vista se encarga de la interacción con el usuario
@@ -61,14 +62,14 @@ while True:
         catalog=initCatalog()
         loadData(catalog)
         sumatoria=0
-        info=mp.valueSet(catalog["ufos"])
+        info=om.valueSet(catalog["ufos"])
         for i in range(1,lt.size(info)+1):
             cant_ciudad=lt.getElement(info,i)
             cantidad=lt.size(cant_ciudad)
             sumatoria+=cantidad
 
 
-        print('Total de UFOS cargados: ' + str(cantidad))
+        print('Total de UFOS cargados: ' + str(sumatoria))
 
 
     elif int(inputs[0]) == 2:
