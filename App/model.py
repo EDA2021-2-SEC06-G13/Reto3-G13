@@ -25,6 +25,7 @@
  """
 
 
+from DISClib.DataStructures.arraylist import getElement
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
@@ -41,6 +42,7 @@ def newCatalog():
     catalog = {'ufos': None}
 
     catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
+    catalog["segundos"] = om.newMap('RBT',comparefunction=cmpufos)
     return catalog
 
 
@@ -74,6 +76,15 @@ def addUfos(catalog,ufo):
         entry = om.get(catalog["ufos"], nombre)
         lista=me.getValue(entry)
         lt.addLast(lista, ufo)
+    segundos=om.contains(catalog["segundos"],ufo["duration (seconds)"])
+    if not segundos:
+        lista_2=lt.newList()
+        lt.addLast(lista_2, ufo)
+        om.put(catalog["segundos"], ufo["duration (seconds)"], lista_2)
+    else:
+        entry = om.get(catalog["segundos"], ufo["duration (seconds)"])
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
 
 
 
@@ -85,7 +96,18 @@ def primer_requerimiento(nombre_ciudad,catalog):
         value= me.getValue(entry)
     return(lista,value)
 
-
+def segundo_requerimiento(limite_inf, limite_sup, catalog):
+    lista=om.keys(catalog["segundos"], limite_inf,limite_sup)
+    lista_final=lt.newList()
+    for i in range(1,lt.size(lista)):
+        llave=lt.getElement(lista,i)
+        entry = om.get(catalog["segundos"], llave)
+        lista_2=me.getValue(entry)
+        for j in range(1,lt.size(lista_2)):
+            avistamiento=lt.getElement(lista_2,j)
+            lt.addLast(lista_final,avistamiento)
+    
+    return lista_final
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo
