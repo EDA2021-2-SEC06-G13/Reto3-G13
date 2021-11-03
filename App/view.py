@@ -19,13 +19,14 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-
+import datetime
 import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
 from DISClib.ADT import map as mp
+from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.ADT import orderedmap as om
 
 """
@@ -38,7 +39,7 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Avistamientos por ciudad")
 
 catalog = None
 
@@ -51,6 +52,8 @@ def initCatalog():
 
 def loadData(catalog):
      return controller.loadData(catalog)
+
+
 """
 Menu principal
 """
@@ -73,7 +76,25 @@ while True:
 
 
     elif int(inputs[0]) == 2:
-        pass
+        ciudad=input("Ingrese el nombre de la ciudad: ")
+        r=controller.requerimiento_1(ciudad,catalog)
+        r_0=r[0]
+        r_1=r[1]
+        print("Se encontraron "+ str(lt.size(r_0)) +" ciudades con señales UFO")
+        print("Hay "+ str(lt.size(r_1))+ " señales en la ciudad: " + ciudad)
+        print("Las primeras 3 y ultimas 3 señales UFO son: ")
+        for i in range(lt.size(r_1)-6, lt.size(r_1)-3):
+            valor=lt.getElement(r_1,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+        for i in range(5, 8):
+            valor=lt.getElement(r_1,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+    
+    elif int(inputs[0])==3:
+        limite_inf=input("Ingrese el limite inferior en segundos: ")
+        limite_sup= input("Ingrese el limite superior en segundos: ")
+        r=controller.requerimiento_2(limite_inf, limite_sup, catalog)
+        print(r)
 
     else:
         sys.exit(0)

@@ -47,7 +47,11 @@ def loadUfos(catalog):
     for ufo in input_file:
         print(ufo)
         model.addUfos(catalog, ufo)
+def requerimiento_1(nombre_ciudad,catalog):
+    return model.primer_requerimiento(nombre_ciudad,catalog)
 
+def requerimiento_2(limite_inf,limite_sup, catalog):
+    return model.segundo_requerimiento(limite_inf, limite_sup, catalog)
 
 
 

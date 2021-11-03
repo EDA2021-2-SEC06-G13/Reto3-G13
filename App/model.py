@@ -32,7 +32,7 @@ from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 from DISClib.ADT import orderedmap as om
-
+import datetime
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
@@ -52,6 +52,13 @@ def cmpufos(city_1,city_2):
         return 1     
     else:         
         return -1
+def cmpfunction(uno,dos):
+
+    if int(uno["duration (seconds)"])> int(dos["duration (seconds)"]):
+        r=True
+    else:
+        r=False
+    return r
 
 
 
@@ -73,13 +80,10 @@ def addUfos(catalog,ufo):
 
 def primer_requerimiento(nombre_ciudad,catalog):
     lista=om.keySet(catalog["ufos"])
-    numero_avistamientos=lt.size(lista)
     if om.contains(catalog["ufos"],nombre_ciudad):
         entry=om.get(catalog["ufos"], nombre_ciudad)
         value= me.getValue(entry)
-        numero_ciudad=lt.size(value)
-    else:
-        return (numero_avistamientos,lista)
+    return(lista,value)
 
 
 # Construccion de modelos
