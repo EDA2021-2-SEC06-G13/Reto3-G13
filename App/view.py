@@ -95,6 +95,12 @@ while True:
         limite_sup= input("Ingrese el limite superior en segundos: ")
         r=controller.requerimiento_2(limite_inf, limite_sup, catalog)
         print(r)
+        for i in range(0, 3):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+        for i in range(191, 194):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
 
     else:
         sys.exit(0)

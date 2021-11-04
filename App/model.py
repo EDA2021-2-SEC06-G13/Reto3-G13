@@ -42,7 +42,7 @@ def newCatalog():
     catalog = {'ufos': None}
 
     catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
-    catalog["segundos"] = om.newMap('RBT',comparefunction=cmpufos)
+    catalog["segundos"] = om.newMap('RBT',comparefunction=cmpfunction)
     return catalog
 
 
@@ -55,12 +55,23 @@ def cmpufos(city_1,city_2):
     else:         
         return -1
 def cmpfunction(uno,dos):
+    if float(uno) == float(dos):         
+        return 0     
+    elif float(uno) > float(dos):         
+        return 1     
+    else:         
+        return -1
+def cmpfechas(ufo1,ufo2):
+    datetime1=datetime.datetime.strptime(ufo1["datetime"], "%Y-%m-%d %H:%M:%S")
+    datetime2=datetime.datetime.strptime(ufo2["datetime"], "%Y-%m-%d %H:%M:%S")
+    fecha1=datetime1.date()
+    fecha2=datetime2.date()
+    return fecha1<fecha2
 
-    if int(uno["duration (seconds)"])> int(dos["duration (seconds)"]):
-        r=True
-    else:
-        r=False
-    return r
+def less(element1, element2):
+    if float(element1["duration (seconds)"]) < float(element2["duration (seconds)"]):
+        return True
+     
 
 
 
@@ -94,18 +105,21 @@ def primer_requerimiento(nombre_ciudad,catalog):
     if om.contains(catalog["ufos"],nombre_ciudad):
         entry=om.get(catalog["ufos"], nombre_ciudad)
         value= me.getValue(entry)
+        value=sa.sort(value,cmpfechas)
     return(lista,value)
 
 def segundo_requerimiento(limite_inf, limite_sup, catalog):
     lista=om.keys(catalog["segundos"], limite_inf,limite_sup)
+    
     lista_final=lt.newList()
-    for i in range(1,lt.size(lista)):
+    for i in range(1,lt.size(lista)+1):
         llave=lt.getElement(lista,i)
         entry = om.get(catalog["segundos"], llave)
         lista_2=me.getValue(entry)
-        for j in range(1,lt.size(lista_2)):
+        for j in range(1,lt.size(lista_2)+1):
             avistamiento=lt.getElement(lista_2,j)
             lt.addLast(lista_final,avistamiento)
+    sa.sort(lista_final,less)
     
     return lista_final
 # Construccion de modelos
