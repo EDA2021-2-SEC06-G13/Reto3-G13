@@ -44,7 +44,7 @@ def newCatalog():
     catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
     catalog["segundos"] = om.newMap('RBT',comparefunction=cmpfunction)
     catalog["hora-minuto"]= om.newMap('RBT',comparefunction=cmphora_fecha)
-    
+    catalog["fecha"]= om.newMap('RBT',comparefunction=cmphora_fecha)
     return catalog
 
 
@@ -134,6 +134,19 @@ def addUfos_en_hora_minuto(catalog,ufo):
         entry = om.get(catalog["hora-minuto"], hora)
         lista=me.getValue(entry)
         lt.addLast(lista, ufo)
+
+def addUfos_en_fecha(catalog,ufo):
+    fecha=datetime.datetime.strptime(ufo["datetime"], "%Y-%m-%d %H:%M:%S")
+    hora=fecha.date()
+    x=om.contains(catalog["fecha"],(hora))
+    if not x:
+        lista_2=lt.newList()
+        lt.addLast(lista_2, ufo)
+        om.put(catalog["fecha"], hora, lista_2)
+    else:
+        entry = om.get(catalog["fecha"], hora)
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
     
    
 
@@ -184,17 +197,17 @@ def tercer_requerimiento(limite_inf,limite_sup,catalog):
     return lista_final
 
 def cuarto_requerimiento(limite_inf,limite_sup,catalog):
-    limite_inferior=datetime.datetime.strptime(limite_inf, "%H:%M:%S")
-    limite_superior=datetime.datetime.strptime(limite_sup, "%H:%M:%S")
-    limite_inferior=limite_inferior.time()
-    limite_superior=limite_superior.time()
+    limite_inferior=datetime.datetime.strptime(limite_inf, "%Y-%m-%d")
+    limite_superior=datetime.datetime.strptime(limite_sup, "%Y-%m-%d" )
+    limite_inferior=limite_inferior.date()
+    limite_superior=limite_superior.date()
 
-    lista=om.keys(catalog["hora-minuto"], limite_inferior,limite_superior)
+    lista=om.keys(catalog["fecha"], limite_inferior,limite_superior)
     
     lista_final=lt.newList()
     for i in range(1,lt.size(lista)+1):
         llave=lt.getElement(lista,i)
-        entry = om.get(catalog["hora-minuto"], llave)
+        entry = om.get(catalog["fecha"], llave)
         lista_2=me.getValue(entry)
         for j in range(1,lt.size(lista_2)+1):
             avistamiento=lt.getElement(lista_2,j)

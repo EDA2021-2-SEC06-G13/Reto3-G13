@@ -48,6 +48,7 @@ def loadUfos(catalog):
         print(ufo)
         model.addUfos(catalog, ufo)
         model.addUfos_en_hora_minuto(catalog,ufo)
+        model.addUfos_en_fecha(catalog,ufo)
         
         
         

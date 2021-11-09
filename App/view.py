@@ -121,7 +121,7 @@ while True:
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
     
-    elif int(inputs[0])==4:
+    elif int(inputs[0])==5:
         limite_inf=input("Ingrese el limite inferior en formato AAAA-MM-DD: ")
         limite_sup= input("Ingrese el limite superior en formato AAAA-MM-DD: ")
         r=controller.requerimiento_3(limite_inf, limite_sup, catalog)
