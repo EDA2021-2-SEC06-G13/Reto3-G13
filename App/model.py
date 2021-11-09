@@ -183,38 +183,27 @@ def tercer_requerimiento(limite_inf,limite_sup,catalog):
     
     return lista_final
 
+def cuarto_requerimiento(limite_inf,limite_sup,catalog):
+    limite_inferior=datetime.datetime.strptime(limite_inf, "%H:%M:%S")
+    limite_superior=datetime.datetime.strptime(limite_sup, "%H:%M:%S")
+    limite_inferior=limite_inferior.time()
+    limite_superior=limite_superior.time()
 
-
-"""""
-
-def tercer_requerimiento2(lim_inf,lim_sup,catalog):
-    mapa_peq=om.newMap("BST",comparefunction=cmptiempo)
-    lista=om.valueSet(catalog["ufos"])
-    for i in lista:
-        hora=i["datetime"]
-        x=str(hora)       
-        x=x.split(" ")
-        x=x[1]
-        if int(x)>=lim_inf and int(x)<=lim_sup:
-            om.put(mapa_peq,x,lista)
-    return mapa_peq
-
-
-
-def tercer_requerimiento(lim_inferior,lim_superior,catalog):
-    mapa_peq=om.newMap("BST",comparefunction=cmptiempo)
-    lista=om.valueSet(catalog["ufos"])
-    for i in range(0,om.size(catalog["ufos"])+1):
-        avistamiento=lt.removeFirst(lista)["first"]["info"]
-        hora=avistamiento["datetime"]
-        x=str(hora)       
-        x=x.split(" ")
-        x=x[1]
-        if x>=lim_inferior and x<=lim_superior:
-            om.put(mapa_peq,x,avistamiento)
-    lista_final=om.valueSet(mapa_peq)
+    lista=om.keys(catalog["hora-minuto"], limite_inferior,limite_superior)
+    
+    lista_final=lt.newList()
+    for i in range(1,lt.size(lista)+1):
+        llave=lt.getElement(lista,i)
+        entry = om.get(catalog["hora-minuto"], llave)
+        lista_2=me.getValue(entry)
+        for j in range(1,lt.size(lista_2)+1):
+            avistamiento=lt.getElement(lista_2,j)
+            lt.addLast(lista_final,avistamiento)
+    sa.sort(lista_final,cmpfechas)
+    
     return lista_final
-"""
+
+
 
 
 

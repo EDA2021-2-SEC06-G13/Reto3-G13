@@ -60,6 +60,9 @@ def requerimiento_2(limite_inf,limite_sup, catalog):
 def requerimiento_3(limite_inf,limite_sup, catalog):
     return model.tercer_requerimiento(limite_inf, limite_sup, catalog)
 
+def requerimiento_4(limite_inf,limite_sup, catalog):
+    return model.cuarto_requerimiento(limite_inf, limite_sup, catalog)
+
 
 
 

@@ -99,6 +99,8 @@ while True:
         limite_inf=input("Ingrese el limite inferior en segundos: ")
         limite_sup= input("Ingrese el limite superior en segundos: ")
         r=controller.requerimiento_2(limite_inf, limite_sup, catalog)
+        print("Se encontraron "+str(lt.size(r))+" entre los valores "+str((limite_inf))+" y "+str((limite_sup)))
+        print("Las primeras 3 y últimas 3 son: ")
         for i in range(1, 4):
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
@@ -110,6 +112,19 @@ while True:
         limite_inf=input("Ingrese el limite inferior en formato HH:MM: ")
         limite_sup= input("Ingrese el limite superior en formato HH:MM: ")
         r=controller.requerimiento_3(limite_inf, limite_sup, catalog)
+        print("Se encontraron "+str(lt.size(r))+" entre las fechas "+str((limite_inf))+" y "+str((limite_sup)))
+        print("Las primeras 3 y últimas 3 son: ")
+        for i in range(1, 4):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+        for i in range(lt.size(r)-2,lt.size(r)+1):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+    
+    elif int(inputs[0])==4:
+        limite_inf=input("Ingrese el limite inferior en formato AAAA-MM-DD: ")
+        limite_sup= input("Ingrese el limite superior en formato AAAA-MM-DD: ")
+        r=controller.requerimiento_3(limite_inf, limite_sup, catalog)
         print("Hay: "+str(lt.size(r)))
         for i in range(1, 4):
             valor=lt.getElement(r,i)
@@ -117,6 +132,7 @@ while True:
         for i in range(lt.size(r)-2,lt.size(r)+1):
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+
 
     else:
         sys.exit(0)
