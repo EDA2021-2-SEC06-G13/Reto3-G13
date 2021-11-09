@@ -43,6 +43,8 @@ def newCatalog():
 
     catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
     catalog["segundos"] = om.newMap('RBT',comparefunction=cmpfunction)
+    catalog["hora-minuto"]= om.newMap('RBT',comparefunction=cmphora_fecha)
+    
     return catalog
 
 
@@ -61,6 +63,7 @@ def cmpfunction(uno,dos):
         return 1     
     else:         
         return -1
+
 def cmpfechas(ufo1,ufo2):
     datetime1=datetime.datetime.strptime(ufo1["datetime"], "%Y-%m-%d %H:%M:%S")
     datetime2=datetime.datetime.strptime(ufo2["datetime"], "%Y-%m-%d %H:%M:%S")
@@ -73,7 +76,29 @@ def less(element1, element2):
         return True
      
 
+def cmptiempo(tiempo_1,tiempo_2):
+    datetime1=datetime.datetime.strptime(tiempo_1["datetime"], "%Y-%m-%d %H:%M:%S")
+    datetime2=datetime.datetime.strptime(tiempo_2["datetime"], "%Y-%m-%d %H:%M:%S")
+    fecha1=datetime1.time()
+    fecha2=datetime2.time()
+    return fecha1<fecha2  
 
+def cmphora_fecha(uno,dos):
+    if uno==dos:
+        return 0
+    elif uno>dos:
+        return 1
+    else:
+        return -1
+
+def cmptiempo2(tiempo_1,tiempo_2):
+    if tiempo_1==tiempo_2:
+        return 0
+    elif tiempo_1>tiempo_2:
+        return 1
+    else:
+        return -1
+    
 
 def addUfos(catalog,ufo):
     presente = om.contains(catalog["ufos"], ufo["city"])
@@ -96,8 +121,21 @@ def addUfos(catalog,ufo):
         entry = om.get(catalog["segundos"], ufo["duration (seconds)"])
         lista=me.getValue(entry)
         lt.addLast(lista, ufo)
-
-
+    
+def addUfos_en_hora_minuto(catalog,ufo):
+    fecha=datetime.datetime.strptime(ufo["datetime"], "%Y-%m-%d %H:%M:%S")
+    hora=fecha.time()
+    x=om.contains(catalog["hora-minuto"],(hora))
+    if not x:
+        lista_2=lt.newList()
+        lt.addLast(lista_2, ufo)
+        om.put(catalog["hora-minuto"], hora, lista_2)
+    else:
+        entry = om.get(catalog["hora-minuto"], hora)
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
+    
+   
 
 
 def primer_requerimiento(nombre_ciudad,catalog):
@@ -122,6 +160,65 @@ def segundo_requerimiento(limite_inf, limite_sup, catalog):
     sa.sort(lista_final,less)
     
     return lista_final
+
+
+
+def tercer_requerimiento(limite_inf,limite_sup,catalog):
+    limite_inferior=datetime.datetime.strptime(limite_inf, "%H:%M:%S")
+    limite_superior=datetime.datetime.strptime(limite_sup, "%H:%M:%S")
+    limite_inferior=limite_inferior.time()
+    limite_superior=limite_superior.time()
+
+    lista=om.keys(catalog["hora-minuto"], limite_inferior,limite_superior)
+    
+    lista_final=lt.newList()
+    for i in range(1,lt.size(lista)+1):
+        llave=lt.getElement(lista,i)
+        entry = om.get(catalog["hora-minuto"], llave)
+        lista_2=me.getValue(entry)
+        for j in range(1,lt.size(lista_2)+1):
+            avistamiento=lt.getElement(lista_2,j)
+            lt.addLast(lista_final,avistamiento)
+    sa.sort(lista_final,cmpfechas)
+    
+    return lista_final
+
+
+
+"""""
+
+def tercer_requerimiento2(lim_inf,lim_sup,catalog):
+    mapa_peq=om.newMap("BST",comparefunction=cmptiempo)
+    lista=om.valueSet(catalog["ufos"])
+    for i in lista:
+        hora=i["datetime"]
+        x=str(hora)       
+        x=x.split(" ")
+        x=x[1]
+        if int(x)>=lim_inf and int(x)<=lim_sup:
+            om.put(mapa_peq,x,lista)
+    return mapa_peq
+
+
+
+def tercer_requerimiento(lim_inferior,lim_superior,catalog):
+    mapa_peq=om.newMap("BST",comparefunction=cmptiempo)
+    lista=om.valueSet(catalog["ufos"])
+    for i in range(0,om.size(catalog["ufos"])+1):
+        avistamiento=lt.removeFirst(lista)["first"]["info"]
+        hora=avistamiento["datetime"]
+        x=str(hora)       
+        x=x.split(" ")
+        x=x[1]
+        if x>=lim_inferior and x<=lim_superior:
+            om.put(mapa_peq,x,avistamiento)
+    lista_final=om.valueSet(mapa_peq)
+    return lista_final
+"""
+
+
+
+
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo

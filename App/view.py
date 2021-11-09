@@ -40,6 +40,11 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Avistamientos por ciudad")
+    print("3- Avistamientos por duración")
+    print("4- Avistamientos por Hora/Minutos del día")
+    print("5- Avistamientos en un rango de fechas")
+    print("6- Avistamientos de una Zona Geográfica")
+    
 
 catalog = None
 
@@ -94,11 +99,22 @@ while True:
         limite_inf=input("Ingrese el limite inferior en segundos: ")
         limite_sup= input("Ingrese el limite superior en segundos: ")
         r=controller.requerimiento_2(limite_inf, limite_sup, catalog)
-        print(r)
-        for i in range(0, 3):
+        for i in range(1, 4):
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
         for i in range(191, 194):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+
+    elif int(inputs[0])==4:
+        limite_inf=input("Ingrese el limite inferior en formato HH:MM: ")
+        limite_sup= input("Ingrese el limite superior en formato HH:MM: ")
+        r=controller.requerimiento_3(limite_inf, limite_sup, catalog)
+        print("Hay: "+str(lt.size(r)))
+        for i in range(1, 4):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
+        for i in range(lt.size(r)-2,lt.size(r)+1):
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
 
