@@ -42,20 +42,31 @@ def loadData(catalog):
 
 
 def loadUfos(catalog):
-    ufosfile = cf.data_dir + 'UFOS/UFOS-utf8-small.csv'
+    ufosfile = cf.data_dir + 'UFOS-utf8-small.csv'
     input_file = csv.DictReader(open(ufosfile, encoding='utf-8'))
     for ufo in input_file:
         print(ufo)
         model.addUfos(catalog, ufo)
+        model.addUfos_en_hora_minuto(catalog,ufo)
+        model.addUfos_en_fecha(catalog,ufo)
+        
+        
+        
 def requerimiento_1(nombre_ciudad,catalog):
     return model.primer_requerimiento(nombre_ciudad,catalog)
 
 def requerimiento_2(limite_inf,limite_sup, catalog):
     return model.segundo_requerimiento(limite_inf, limite_sup, catalog)
 
+
+def requerimiento_3(limite_inf,limite_sup, catalog):
+    return model.tercer_requerimiento(limite_inf, limite_sup, catalog)
+
+def requerimiento_4(limite_inf,limite_sup, catalog):
+    return model.cuarto_requerimiento(limite_inf, limite_sup, catalog)
+
 def requerimiento_5(longitud_min,longitud_max, latitud_min, latitud_max, catalog):
     return model.quinto_requerimiento(longitud_min,longitud_max, latitud_min, latitud_max,catalog)
-
 
 
 # Inicialización del Catálogo de libros
