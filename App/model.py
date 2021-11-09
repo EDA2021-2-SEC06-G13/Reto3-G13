@@ -43,6 +43,8 @@ def newCatalog():
 
     catalog['ufos'] = om.newMap('BST',comparefunction=cmpufos)
     catalog["segundos"] = om.newMap('RBT',comparefunction=cmpfunction)
+    catalog["latitude"] = om.newMap('RBT',comparefunction=cmpfunction)
+    catalog["longitud"] = om.newMap('RBT',comparefunction=cmpfunction)
     return catalog
 
 
@@ -96,8 +98,24 @@ def addUfos(catalog,ufo):
         entry = om.get(catalog["segundos"], ufo["duration (seconds)"])
         lista=me.getValue(entry)
         lt.addLast(lista, ufo)
-
-
+    latitud=om.contains(catalog["latitude"],round(float(ufo["latitude"]),2))
+    if not latitud:
+        lista_3=lt.newList()
+        lt.addLast(lista_3, ufo)
+        om.put(catalog["latitude"], round(float(ufo["latitude"]),2), lista_3)
+    else:
+        entry = om.get(catalog["latitude"], round(float(ufo["latitude"]),2))
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
+    longitud=om.contains(catalog["longitud"],round(float(ufo["longitude"]),2))
+    if not longitud:
+        lista_4=lt.newList()
+        lt.addLast(lista_4, ufo)
+        om.put(catalog["longitud"], round(float(ufo["longitude"]),2), lista_4)
+    else:
+        entry = om.get(catalog["longitud"], round(float(ufo["longitude"]),2))
+        lista=me.getValue(entry)
+        lt.addLast(lista, ufo)
 
 
 def primer_requerimiento(nombre_ciudad,catalog):
@@ -109,8 +127,8 @@ def primer_requerimiento(nombre_ciudad,catalog):
     return(lista,value)
 
 def segundo_requerimiento(limite_inf, limite_sup, catalog):
+    maximo= om.maxKey(catalog["segundos"])
     lista=om.keys(catalog["segundos"], limite_inf,limite_sup)
-    
     lista_final=lt.newList()
     for i in range(1,lt.size(lista)+1):
         llave=lt.getElement(lista,i)
@@ -121,7 +139,23 @@ def segundo_requerimiento(limite_inf, limite_sup, catalog):
             lt.addLast(lista_final,avistamiento)
     sa.sort(lista_final,less)
     
-    return lista_final
+    return (maximo,lista_final)
+
+def quinto_requerimiento(longitud_min, longitud_max, latitud_min, latitud_max, catalog):
+    lista=om.keys(catalog["latitude"], float(latitud_min), float(latitud_max))
+    lista_1=lt.newList()
+    for i in range(1,lt.size(lista)+1):
+        llave=lt.getElement(lista,i)
+        entry = om.get(catalog["latitude"], llave)
+        lista_2=me.getValue(entry)
+        for j in range(1,lt.size(lista_2)+1):
+            avistamiento=lt.getElement(lista_2,j)
+            avistamiento["latitude"]=round(float(avistamiento["latitude"]),2)
+            avistamiento["longitude"]=round(float(avistamiento["longitude"]),2)
+            if avistamiento["longitude"]>=float(longitud_min) and avistamiento["longitude"]<=float(longitud_max): 
+                lt.addLast(lista_1,avistamiento)
+    return lista_1
+    
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo

@@ -53,6 +53,9 @@ def requerimiento_1(nombre_ciudad,catalog):
 def requerimiento_2(limite_inf,limite_sup, catalog):
     return model.segundo_requerimiento(limite_inf, limite_sup, catalog)
 
+def requerimiento_5(longitud_min,longitud_max, latitud_min, latitud_max, catalog):
+    return model.quinto_requerimiento(longitud_min,longitud_max, latitud_min, latitud_max,catalog)
+
 
 
 # Inicialización del Catálogo de libros

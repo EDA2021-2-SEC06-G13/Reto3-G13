@@ -40,6 +40,10 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Avistamientos por ciudad")
+    print("3- Avistamientos por duración")
+    print("4-")
+    print("5-")
+    print("6- Avistamientos por zona geografica")
 
 catalog = None
 
@@ -94,14 +98,26 @@ while True:
         limite_inf=input("Ingrese el limite inferior en segundos: ")
         limite_sup= input("Ingrese el limite superior en segundos: ")
         r=controller.requerimiento_2(limite_inf, limite_sup, catalog)
-        print(r)
+        print("La duracion maxima registrada es: "+str(r[0]))
         for i in range(0, 3):
-            valor=lt.getElement(r,i)
+            valor=lt.getElement(r[1],i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
         for i in range(191, 194):
-            valor=lt.getElement(r,i)
+            valor=lt.getElement(r[1],i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])
-
+    elif int(inputs[0])==6:
+        long_min=input("Ingrese la longitud minima: ")
+        long_max=input("Ingrese la longitud maxima: ")
+        lat_min=input("Ingrese la latitud minima: ")
+        lat_max=input("Ingrese la latitud maxima: ")
+        r=controller.requerimiento_5(long_min,long_max,lat_min,lat_max,catalog)
+        print(lt.size(r))
+        for i in range(1, 7):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"], valor["longitude"], valor["latitude"])
+        for i in range(-6, -1):
+            valor=lt.getElement(r,i)
+            print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"], valor["longitude"], valor["latitude"])
     else:
         sys.exit(0)
 sys.exit(0)
