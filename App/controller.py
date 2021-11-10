@@ -42,7 +42,7 @@ def loadData(catalog):
 
 
 def loadUfos(catalog):
-    ufosfile = cf.data_dir + 'UFOS/UFOS-utf8-small.csv'
+    ufosfile = cf.data_dir + 'UFOS-utf8-small.csv'
     input_file = csv.DictReader(open(ufosfile, encoding='utf-8'))
     for ufo in input_file:
         print(ufo)

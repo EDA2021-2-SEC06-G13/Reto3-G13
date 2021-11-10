@@ -202,8 +202,8 @@ def segundo_requerimiento(limite_inf, limite_sup, catalog):
 
 
 def tercer_requerimiento(limite_inf,limite_sup,catalog):
-    limite_inferior=datetime.datetime.strptime(limite_inf, "%H:%M:%S")
-    limite_superior=datetime.datetime.strptime(limite_sup, "%H:%M:%S")
+    limite_inferior=datetime.datetime.strptime(limite_inf, "%H:%M")
+    limite_superior=datetime.datetime.strptime(limite_sup, "%H:%M")
     limite_inferior=limite_inferior.time()
     limite_superior=limite_superior.time()
 
@@ -218,7 +218,7 @@ def tercer_requerimiento(limite_inf,limite_sup,catalog):
             avistamiento=lt.getElement(lista_2,j)
             lt.addLast(lista_final,avistamiento)
     sa.sort(lista_final,cmptiempo)
-     
+    print(lista_final)
     return lista_final
 
 def cuarto_requerimiento(limite_inf,limite_sup,catalog):
