@@ -76,7 +76,12 @@ def cmpfechas(ufo1,ufo2):
 def less(element1, element2):
     if float(element1["duration (seconds)"]) < float(element2["duration (seconds)"]):
         return True
-     
+def less_2(element1, element2):
+    if float(element1) < float(element2):
+        return True
+def alfabetica(uno,dos):
+    if uno["city"]<dos["city"]:
+        return True
 
 def cmptiempo(tiempo_1,tiempo_2):
     datetime1=datetime.datetime.strptime(tiempo_1["datetime"], "%Y-%m-%d %H:%M:%S")
@@ -182,15 +187,16 @@ def primer_requerimiento(nombre_ciudad,catalog):
 def segundo_requerimiento(limite_inf, limite_sup, catalog):
     maximo= om.maxKey(catalog["segundos"])
     lista=om.keys(catalog["segundos"], limite_inf,limite_sup)
+    sa.sort(lista,less_2)
     lista_final=lt.newList()
     for i in range(1,lt.size(lista)+1):
         llave=lt.getElement(lista,i)
         entry = om.get(catalog["segundos"], llave)
         lista_2=me.getValue(entry)
+        sa.sort(lista_2,alfabetica)
         for j in range(1,lt.size(lista_2)+1):
             avistamiento=lt.getElement(lista_2,j)
             lt.addLast(lista_final,avistamiento)
-    sa.sort(lista_final,less)
     
     return (maximo,lista_final)
 
