@@ -125,8 +125,9 @@ while True:
     elif int(inputs[0])==5:
         limite_inf=input("Ingrese el limite inferior en formato AAAA-MM-DD: ")
         limite_sup= input("Ingrese el limite superior en formato AAAA-MM-DD: ")
-        r=controller.requerimiento_3(limite_inf, limite_sup, catalog)
-        print("Hay: "+str(lt.size(r)))
+        r=controller.requerimiento_4(limite_inf, limite_sup, catalog)
+        print("Se encontraron "+str(lt.size(r))+" entre las fechas "+str((limite_inf))+" y "+str((limite_sup)))
+        print("Las primeras 3 y últimas 3 son: ")
         for i in range(1, 4):
             valor=lt.getElement(r,i)
             print(valor["datetime"], valor["city"], valor["state"], valor["country"], valor["shape"],valor["duration (seconds)"])

@@ -211,8 +211,8 @@ def tercer_requerimiento(limite_inf,limite_sup,catalog):
         for j in range(1,lt.size(lista_2)+1):
             avistamiento=lt.getElement(lista_2,j)
             lt.addLast(lista_final,avistamiento)
-    sa.sort(lista_final,cmpfechas)
-    
+    sa.sort(lista_final,cmptiempo)
+     
     return lista_final
 
 def cuarto_requerimiento(limite_inf,limite_sup,catalog):
@@ -220,6 +220,7 @@ def cuarto_requerimiento(limite_inf,limite_sup,catalog):
     limite_superior=datetime.datetime.strptime(limite_sup, "%Y-%m-%d" )
     limite_inferior=limite_inferior.date()
     limite_superior=limite_superior.date()
+
 
     lista=om.keys(catalog["fecha"], limite_inferior,limite_superior)
     
