@@ -83,12 +83,17 @@ def alfabetica(uno,dos):
     if uno["city"]<dos["city"]:
         return True
 
+def less_3(element1, element2):
+    if (element1) < (element2):
+        return True
+
 def cmptiempo(tiempo_1,tiempo_2):
     datetime1=datetime.datetime.strptime(tiempo_1["datetime"], "%Y-%m-%d %H:%M:%S")
     datetime2=datetime.datetime.strptime(tiempo_2["datetime"], "%Y-%m-%d %H:%M:%S")
     fecha1=datetime1.time()
     fecha2=datetime2.time()
     return fecha1<fecha2  
+
 
 def cmphora_fecha(uno,dos):
     if uno==dos:
@@ -208,17 +213,18 @@ def tercer_requerimiento(limite_inf,limite_sup,catalog):
     limite_superior=limite_superior.time()
 
     lista=om.keys(catalog["hora-minuto"], limite_inferior,limite_superior)
-    
+    sa.sort(lista,less_3)
     lista_final=lt.newList()
     for i in range(1,lt.size(lista)+1):
         llave=lt.getElement(lista,i)
         entry = om.get(catalog["hora-minuto"], llave)
         lista_2=me.getValue(entry)
+        sa.sort(lista_2,cmpfechas)
         for j in range(1,lt.size(lista_2)+1):
             avistamiento=lt.getElement(lista_2,j)
             lt.addLast(lista_final,avistamiento)
-    sa.sort(lista_final,cmptiempo)
-    print(lista_final)
+    
+    
     return lista_final
 
 def cuarto_requerimiento(limite_inf,limite_sup,catalog):
